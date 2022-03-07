@@ -5,7 +5,7 @@ namespace idealgas {
 using glm::vec2;
 
 GasContainer::GasContainer() {
-
+    // initialize a vector of particles
 }
 
 void GasContainer::Display() const {
@@ -18,6 +18,8 @@ void GasContainer::Display() const {
 
 void GasContainer::AdvanceOneFrame() {
   ++dummy_variable_;
+  // check to make sure no collisions with wall or other particles
+  // if particles are near each other, reverse direction/similar action
 }
 
 }  // namespace idealgas
