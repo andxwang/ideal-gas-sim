@@ -2,12 +2,18 @@
 
 #include <gas_container.h>
 
-using idealgas::GasContainer;
+using namespace idealgas;
 
 TEST_CASE("Placeholder test") {
   GasContainer container;
   container.AdvanceOneFrame();
   REQUIRE(1 > 0);
+}
+
+TEST_CASE("just testing") {
+  vec2 v1(0, 0);
+  vec2 v2(5, 12);
+  REQUIRE(glm::distance(v1, v2) == 13);
 }
 
 /*
