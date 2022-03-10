@@ -2,41 +2,54 @@
 // Created by Andy Wang on 3/7/22.
 //
 
-#include <glm/vec2.hpp>
 #include "particle.h"
 
 namespace idealgas {
 
 using glm::vec2;
 
-Particle::Particle() : position_(0, 0), velocity_(0, 0), radius_(1) {}
+Particle::Particle()
+    : position_(0, 0),
+      velocity_(0, 0),
+      radius_(1),
+      color_(ci::Color("blue")) {}
 
-Particle::Particle(const vec2& position, const vec2& velocity, int radius)
-    : position_(position), velocity_(velocity), radius_(radius) {
-}
+Particle::Particle(const vec2& position, const vec2& velocity, float radius, const ci::Color& color)
+    : position_(position),
+      velocity_(velocity),
+      radius_(radius),
+      color_(color) {}
 
-vec2 Particle::getPosition() const {
+const vec2 &Particle::GetPosition() const {
   return position_;
 }
 
-void Particle::setPosition(const vec2 &position) {
+void Particle::SetPosition(const vec2 &position) {
   position_ = position;
 }
 
-const vec2 &Particle::getVelocity() const {
+const vec2 &Particle::GetVelocity() const {
   return velocity_;
 }
 
-void Particle::setVelocity(const vec2 &velocity) {
+void Particle::SetVelocity(const vec2 &velocity) {
   velocity_ = velocity;
 }
 
-int Particle::getRadius() const {
+float Particle::GetRadius() const {
   return radius_;
 }
 
-void Particle::setRadius(int radius) {
+void Particle::SetRadius(float radius) {
   radius_ = radius;
+}
+
+const cinder::Color &Particle::GetColor() const {
+  return color_;
+}
+
+void Particle::SetColor(const cinder::Color &color) {
+  color_ = color;
 }
 
 }

@@ -5,6 +5,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include "cinder/Color.h"
 
 using namespace glm;
 
@@ -14,24 +15,29 @@ class Particle {
 
  public:
   Particle();
-  Particle(const vec2& position, const vec2& velocity, int radius);
+  Particle(const vec2& position, const vec2& velocity, float radius, const ci::Color& color);
 
-  vec2 getPosition() const;
+  const vec2 &GetPosition() const;
 
-  void setPosition(const vec2 &position);
+  void SetPosition(const vec2 &position);
 
-  const vec2 &getVelocity() const;
+  const vec2 &GetVelocity() const;
 
-  void setVelocity(const vec2 &velocity);
+  void SetVelocity(const vec2 &velocity);
 
-  int getRadius() const;
+  float GetRadius() const;
 
-  void setRadius(int radius);
+  void SetRadius(float radius);
+
+  const cinder::Color &GetColor() const;
+
+  void SetColor(const cinder::Color &color);
 
  private:
   vec2 position_;
   vec2 velocity_;
-  int radius_;
+  float radius_;
+  ci::Color color_;
 };
 
 } // namespace idealgas

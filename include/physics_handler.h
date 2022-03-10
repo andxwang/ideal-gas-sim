@@ -6,6 +6,7 @@
 
 #include "particle.h"
 #include <vector>
+#include <random>
 #include <glm/glm.hpp>
 
 using namespace glm;
@@ -21,7 +22,7 @@ class PhysicsHandler {
 
  public:
 
-  PhysicsHandler(int num_particles, vec2 top_left, vec2 bottom_right);
+  PhysicsHandler(int num_particles, const vec2& top_left, const vec2& bottom_right);
 
   /**
    * Updates the velocity of two particles_ that Collide.
@@ -57,9 +58,28 @@ class PhysicsHandler {
   void ProcessWallCollision();
 
   vector<Particle> particles_;
+
+ private:
   vec2 rect_top_left_;
   vec2 rect_bottom_right_;
-
+  const float kMinRadius = 1.0;
+  const float kMaxRadius = 50.0;
+  const float kMaxVelocity = 10.0;
+  std::random_device device;
+  std::mt19937 generator;
+  std::uniform_int_distribution<> random_x;
+  std::uniform_int_distribution<> random_y;
+  std::uniform_real_distribution<> random_rgb;
+  std::uniform_real_distribution<> random_radius;
+  std::uniform_real_distribution<> random_vel;
+  /**
+   * Calculate the average of two RGB colors
+   * by averaging each component.
+   * @param color1 the first color
+   * @param color2 the second color
+   * @return the average color
+   */
+  ci::Color GetAvgColor(const ci::Color& color1, const ci::Color& color2);
 };
 
 } // namespace idealgas
