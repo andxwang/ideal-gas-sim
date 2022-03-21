@@ -32,6 +32,10 @@ float Particle::GetRadius() const {
   return radius_;
 }
 
+float Particle::GetMass() const {
+  return mass_;
+}
+
 const cinder::Color &Particle::GetColor() const {
   return color_;
 }
@@ -46,6 +50,10 @@ void Particle::SetVelocity(const vec2 &velocity) {
 
 void Particle::SetRadius(float radius) {
   radius_ = radius;
+}
+
+void Particle::SetMass(float mass) {
+  mass_ = mass;
 }
 
 void Particle::SetColor(const cinder::Color &color) {

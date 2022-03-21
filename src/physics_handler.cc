@@ -21,15 +21,21 @@ PhysicsHandler::PhysicsHandler(int num_particles, const vec2& top_left, const ve
                                               rect_bottom_right_.y - kMaxRadius);
   random_rgb = std::uniform_real_distribution<> (0.0, 1.0);
   random_radius = std::uniform_real_distribution<> (kMinRadius, kMaxRadius);
+  random_mass = std::uniform_real_distribution<> (kMinMass, kMaxMass);
   random_vel = std::uniform_real_distribution<> (-kMaxVelocity, kMaxVelocity);
 
   for (Particle& particle : particles_) {
     particle.SetPosition(vec2(random_x(generator), random_y(generator)));
     particle.SetVelocity(vec2(random_vel(generator), random_vel(generator)));
-    particle.SetRadius(random_radius(generator));
-    particle.SetColor(ci::Color(random_rgb(generator),
-                                random_rgb(generator),
-                                random_rgb(generator)));
+    double temp = random_radius(generator);
+    particle.SetRadius(temp);
+    particle.SetMass(temp);
+    particle.SetColor(ci::Color(temp/kMaxRadius, 0, 1-temp/kMaxRadius));
+//    particle.SetRadius(random_radius(generator));
+//    particle.SetMass(random_mass(generator)); // TODO re-add
+//    particle.SetColor(ci::Color(random_rgb(generator),
+//                                random_rgb(generator),
+//                                random_rgb(generator)));
   }
 }
 
@@ -40,10 +46,12 @@ void PhysicsHandler::Collide(Particle &first, Particle &second) {
   vec2 pos2_old = second.GetPosition();
 
   vec2 v1_new = vel1_old -
+      (2 * second.GetMass()) / (first.GetMass() + second.GetMass()) *
       (float) (glm::dot((vel1_old - vel2_old), (pos1_old - pos2_old)) /
       pow(glm::length(pos1_old - pos2_old), 2)) *
       (pos1_old - pos2_old);
   vec2 v2_new = vel2_old -
+      (2 * first.GetMass()) / (first.GetMass() + second.GetMass()) *
       (float) (glm::dot((vel2_old - vel1_old), (pos2_old - pos1_old)) /
       pow(glm::length(pos2_old - pos1_old), 2)) *
       (pos2_old - pos1_old);
@@ -78,10 +86,10 @@ void PhysicsHandler::ProcessParticleCollision() {
       if (dot((outer_vel - inner_vel), (outer_pos - inner_pos)) < 0) {
         if (distance(outer_pos, inner_pos) <= (outer_radius + inner_radius)) {
           // average RGB color of both particles' colors
-          ci::Color avg_color = GetAvgColor(particles_[outer].GetColor(),
-                                            particles_[inner].GetColor());
-          particles_[outer].SetColor(avg_color);
-          particles_[inner].SetColor(avg_color);
+//          ci::Color avg_color = GetAvgColor(particles_[outer].GetColor(),
+//                                            particles_[inner].GetColor());
+//          particles_[outer].SetColor(avg_color);
+//          particles_[inner].SetColor(avg_color); // TODO re-add these lines
           Collide(particles_[outer], particles_[inner]);
         }
       }
@@ -100,17 +108,17 @@ void PhysicsHandler::ProcessWallCollision() {
     vel.y < 0) ||
     (distance(pos, vec2(pos.x, rect_bottom_right_.y)) < particle.GetRadius() &&
     vel.y > 0)) {
-      particle.SetColor(ci::Color(random_rgb(generator),
-                                  random_rgb(generator),
-                                  random_rgb(generator)));
+//      particle.SetColor(ci::Color(random_rgb(generator),
+//                                  random_rgb(generator),
+//                                  random_rgb(generator))); // TODO re-add
       HitHorizontalWall(particle);
     } else if ((distance(pos, vec2(rect_top_left_.x, pos.y)) < particle.GetRadius() &&
     vel.x < 0) ||
     (distance(pos, vec2(rect_bottom_right_.x, pos.y)) < particle.GetRadius() &&
     vel.x > 0)) {
-      particle.SetColor(ci::Color(random_rgb(generator),
-                                  random_rgb(generator),
-                                  random_rgb(generator)));
+//      particle.SetColor(ci::Color(random_rgb(generator),
+//                                  random_rgb(generator),
+//                                  random_rgb(generator))); // TODO re-add
       HitVerticalWall(particle);
     }
   }

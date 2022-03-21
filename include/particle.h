@@ -23,6 +23,8 @@ class Particle {
 
   float GetRadius() const;
 
+  float GetMass() const;
+
   const cinder::Color &GetColor() const;
 
   void SetPosition(const vec2 &position);
@@ -31,12 +33,15 @@ class Particle {
 
   void SetRadius(float radius);
 
+  void SetMass(float mass);
+
   void SetColor(const cinder::Color &color);
 
  private:
   vec2 position_;
   vec2 velocity_;
   float radius_;
+  float mass_;
   ci::Color color_;
 };
 
