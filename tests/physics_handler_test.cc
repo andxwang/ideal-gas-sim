@@ -35,6 +35,7 @@ TEST_CASE("No collision") {
     REQUIRE(p1.GetPosition() == vec2(7, 6));
     REQUIRE(p1.GetVelocity() == vec2(1, 0));
   }
+
   SECTION("Moving away from each other with overlap") {
     PhysicsHandler handler(2, vec2(0, 0), vec2(10, 10));
     Particle& p0 = handler.particles_[0];
@@ -132,6 +133,7 @@ TEST_CASE("Wall collision") {
 
     REQUIRE(p0.GetVelocity() == vec2(0, 0.1));
   }
+
   SECTION("South wall") {
     PhysicsHandler handler(1, vec2(0, 0), vec2(10, 10));
     Particle& p0 = handler.particles_[0];
@@ -144,6 +146,7 @@ TEST_CASE("Wall collision") {
 
     REQUIRE(p0.GetVelocity() == vec2(0, -0.1));
   }
+
   SECTION("West wall") {
     PhysicsHandler handler(1, vec2(0, 0), vec2(10, 10));
     Particle& p0 = handler.particles_[0];
@@ -156,6 +159,7 @@ TEST_CASE("Wall collision") {
 
     REQUIRE(p0.GetVelocity() == vec2(0.1, 0));
   }
+
   SECTION("East wall") {
     PhysicsHandler handler(1, vec2(0, 0), vec2(10, 10));
     Particle& p0 = handler.particles_[0];

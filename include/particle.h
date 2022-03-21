@@ -19,17 +19,17 @@ class Particle {
 
   const vec2 &GetPosition() const;
 
-  void SetPosition(const vec2 &position);
-
   const vec2 &GetVelocity() const;
-
-  void SetVelocity(const vec2 &velocity);
 
   float GetRadius() const;
 
-  void SetRadius(float radius);
-
   const cinder::Color &GetColor() const;
+
+  void SetPosition(const vec2 &position);
+
+  void SetVelocity(const vec2 &velocity);
+
+  void SetRadius(float radius);
 
   void SetColor(const cinder::Color &color);
 

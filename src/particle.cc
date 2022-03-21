@@ -24,28 +24,28 @@ const vec2 &Particle::GetPosition() const {
   return position_;
 }
 
-void Particle::SetPosition(const vec2 &position) {
-  position_ = position;
-}
-
 const vec2 &Particle::GetVelocity() const {
   return velocity_;
-}
-
-void Particle::SetVelocity(const vec2 &velocity) {
-  velocity_ = velocity;
 }
 
 float Particle::GetRadius() const {
   return radius_;
 }
 
-void Particle::SetRadius(float radius) {
-  radius_ = radius;
-}
-
 const cinder::Color &Particle::GetColor() const {
   return color_;
+}
+
+void Particle::SetPosition(const vec2 &position) {
+  position_ = position;
+}
+
+void Particle::SetVelocity(const vec2 &velocity) {
+  velocity_ = velocity;
+}
+
+void Particle::SetRadius(float radius) {
+  radius_ = radius;
 }
 
 void Particle::SetColor(const cinder::Color &color) {
