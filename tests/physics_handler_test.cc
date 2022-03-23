@@ -57,7 +57,7 @@ TEST_CASE("No collision") {
   }
 }
 
-TEST_CASE("Collision") {
+TEST_CASE("Collision, same mass") {
   SECTION("Head on: velocities are exactly opposite") {
     PhysicsHandler handler(2, vec2(0, 0), vec2(10, 10));
     Particle& p0 = handler.particles_[0];
@@ -65,9 +65,11 @@ TEST_CASE("Collision") {
     p0.SetPosition(vec2(3.9, 5));
     p0.SetVelocity(vec2(1, 0));
     p0.SetRadius(1);
+    p0.SetMass(1);
     p1.SetPosition(vec2(6.1, 5));
     p1.SetVelocity(vec2(-1, 0));
     p1.SetRadius(1);
+    p1.SetMass(1);
 
     p0.SetPosition(p0.GetPosition() + p0.GetVelocity());
     p1.SetPosition(p1.GetPosition() + p1.GetVelocity());
@@ -84,9 +86,11 @@ TEST_CASE("Collision") {
     p0.SetPosition(vec2(9.6, 14.9));
     p0.SetVelocity(vec2(0.4, 0.1));
     p0.SetRadius(8);
+    p0.SetMass(1);
     p1.SetPosition(vec2(22.3, 20.5));
     p1.SetVelocity(vec2(-0.3, -0.5));
     p1.SetRadius(5);
+    p1.SetMass(1);
 
     p0.SetPosition(p0.GetPosition() + p0.GetVelocity());
     p1.SetPosition(p1.GetPosition() + p1.GetVelocity());
@@ -105,9 +109,11 @@ TEST_CASE("Collision") {
     p0.SetPosition(vec2(10, 34.5));
     p0.SetVelocity(vec2(2, -0.5));
     p0.SetRadius(8);
+    p0.SetMass(1);
     p1.SetPosition(vec2(21.5, 48.2));
     p1.SetVelocity(vec2(-1.5, 0.8));
     p1.SetRadius(9);
+    p1.SetMass(1);
 
     p0.SetPosition(p0.GetPosition() + p0.GetVelocity());
     p1.SetPosition(p1.GetPosition() + p1.GetVelocity());
@@ -117,6 +123,84 @@ TEST_CASE("Collision") {
     REQUIRE(abs(p0.GetVelocity().y - -0.94118) < 0.01);
     REQUIRE(abs(p1.GetVelocity().x - -1.26471) < 0.01);
     REQUIRE(abs(p1.GetVelocity().y -  1.24118) < 0.01);
+  }
+
+  SECTION("Three particles, only two collide") {
+    PhysicsHandler handler(3, vec2(0, 0), vec2(100, 100));
+    Particle& p0 = handler.particles_[0];
+    Particle& p1 = handler.particles_[1];
+    Particle& p2 = handler.particles_[2];
+    p0.SetPosition(vec2(10, 34.5));
+    p0.SetVelocity(vec2(2, -0.5));
+    p0.SetRadius(8);
+    p0.SetMass(1);
+    p1.SetPosition(vec2(21.5, 48.2));
+    p1.SetVelocity(vec2(-1.5, 0.8));
+    p1.SetRadius(9);
+    p1.SetMass(1);
+    p2.SetPosition(vec2(67, 67));
+    p2.SetVelocity(vec2(2, -2));
+    p2.SetRadius(4);
+    p2.SetMass(1);
+
+    p0.SetPosition(p0.GetPosition() + p0.GetVelocity());
+    p1.SetPosition(p1.GetPosition() + p1.GetVelocity());
+    p2.SetPosition(p2.GetPosition() + p2.GetVelocity());
+    handler.ProcessParticleCollision();
+
+    REQUIRE(abs(p0.GetVelocity().x -  1.76471) < 0.01);
+    REQUIRE(abs(p0.GetVelocity().y - -0.94118) < 0.01);
+    REQUIRE(abs(p1.GetVelocity().x - -1.26471) < 0.01);
+    REQUIRE(abs(p1.GetVelocity().y -  1.24118) < 0.01);
+    REQUIRE(p2.GetVelocity() == vec2(2, -2));
+  }
+}
+
+TEST_CASE("Collision, different masses") {
+  SECTION("Offset collision 1") {
+    PhysicsHandler handler(2, vec2(0, 0), vec2(100, 100));
+    Particle& p0 = handler.particles_[0];
+    Particle& p1 = handler.particles_[1];
+    p0.SetPosition(vec2(9.6, 14.9));
+    p0.SetVelocity(vec2(0.4, 0.1));
+    p0.SetRadius(8);
+    p0.SetMass(5);
+    p1.SetPosition(vec2(22.3, 20.5));
+    p1.SetVelocity(vec2(-0.3, -0.5));
+    p1.SetRadius(5);
+    p1.SetMass(2);
+
+    p0.SetPosition(p0.GetPosition() + p0.GetVelocity());
+    p1.SetPosition(p1.GetPosition() + p1.GetVelocity());
+    handler.ProcessParticleCollision();
+
+    REQUIRE(abs(p0.GetVelocity().x - -0.06255) < 0.01);
+    REQUIRE(abs(p0.GetVelocity().y - -0.09273) < 0.01);
+    REQUIRE(abs(p1.GetVelocity().x -  0.85638) < 0.01);
+    REQUIRE(abs(p1.GetVelocity().y - -0.01817) < 0.01);
+  }
+
+  SECTION("Offset collision 2") {
+    PhysicsHandler handler(2, vec2(0, 0), vec2(100, 100));
+    Particle& p0 = handler.particles_[0];
+    Particle& p1 = handler.particles_[1];
+    p0.SetPosition(vec2(10, 34.5));
+    p0.SetVelocity(vec2(2, -0.5));
+    p0.SetRadius(8);
+    p0.SetMass(3.5);
+    p1.SetPosition(vec2(21.5, 48.2));
+    p1.SetVelocity(vec2(-1.5, 0.8));
+    p1.SetRadius(9);
+    p1.SetMass(7.8);
+
+    p0.SetPosition(p0.GetPosition() + p0.GetVelocity());
+    p1.SetPosition(p1.GetPosition() + p1.GetVelocity());
+    handler.ProcessParticleCollision();
+
+    REQUIRE(abs(p0.GetVelocity().x -  1.67517) < 0.01);
+    REQUIRE(abs(p0.GetVelocity().y - -1.10906) < 0.01);
+    REQUIRE(abs(p1.GetVelocity().x - -1.35424) < 0.01);
+    REQUIRE(abs(p1.GetVelocity().y -  1.07330) < 0.01);
   }
 }
 
@@ -172,26 +256,4 @@ TEST_CASE("Wall collision") {
 
     REQUIRE(p0.GetVelocity() == vec2(-0.1, 0));
   }
-}
-
-TEST_CASE("Fun: test color change when collide") {
-  ci::Color color1(0.2, 0.7, 0.4);
-  ci::Color color2(0.8, 0.3, 0.6);
-  PhysicsHandler handler(2, vec2(0, 0), vec2(100, 100));
-  Particle& p0 = handler.particles_[0];
-  Particle& p1 = handler.particles_[1];
-  p0.SetPosition(vec2(9.6, 14.9));
-  p0.SetVelocity(vec2(0.4, 0.1));
-  p0.SetRadius(8);
-  p0.SetColor(color1);
-  p1.SetPosition(vec2(22.3, 20.5));
-  p1.SetVelocity(vec2(-0.3, -0.5));
-  p1.SetRadius(5);
-  p1.SetColor(color2);
-
-  p0.SetPosition(p0.GetPosition() + p0.GetVelocity());
-  p1.SetPosition(p1.GetPosition() + p1.GetVelocity());
-  handler.ProcessParticleCollision();
-
-  REQUIRE(p0.GetColor() == ci::Color(0.5, 0.5, 0.5));
 }

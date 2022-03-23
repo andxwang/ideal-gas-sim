@@ -6,7 +6,10 @@
 
 namespace idealgas {
 
-PhysicsHandler::PhysicsHandler(int num_particles, const vec2& top_left, const vec2& bottom_right) {
+PhysicsHandler::PhysicsHandler(int num_particles,
+                               const vec2& top_left,
+                               const vec2& bottom_right,
+                               const vector<ci::Color>& colors) {
   if (top_left.x >= bottom_right.x || top_left.y >= bottom_right.y)
     throw std::invalid_argument("Invalid top left and bottom right coordinates!");
   rect_top_left_ = vec2(top_left);
@@ -18,9 +21,6 @@ PhysicsHandler::PhysicsHandler(int num_particles, const vec2& top_left, const ve
                                               rect_bottom_right_.x - kMaxRadius);
   random_y = std::uniform_int_distribution<> (rect_top_left_.y + kMaxRadius,
                                               rect_bottom_right_.y - kMaxRadius);
-//  random_rgb = std::uniform_real_distribution<> (0.0, 1.0);
-//  random_radius = std::uniform_real_distribution<> (kMinRadius, kMaxRadius);
-//  random_mass = std::uniform_real_distribution<> (kMinMass, kMaxMass);
   random_vel = std::uniform_real_distribution<> (-kMaxVelocity, kMaxVelocity);
   color_picker = std::uniform_real_distribution<> (0.0, 1.0);
 
@@ -29,23 +29,18 @@ PhysicsHandler::PhysicsHandler(int num_particles, const vec2& top_left, const ve
     particle.SetVelocity(vec2(random_vel(generator), random_vel(generator)));
     double color_rand = color_picker(generator);
     if (color_rand < 0.333) {
-      particle.SetColor(ci::Color("red"));
+      particle.SetColor(ci::Color(colors[0]));
       particle.SetMass(masses[0]);
       particle.SetRadius(radii[0]);
     } else if (color_rand < 0.667) {
-      particle.SetColor(ci::Color("green"));
+      particle.SetColor(ci::Color(colors[1]));
       particle.SetMass(masses[1]);
       particle.SetRadius(radii[1]);
     } else {
-      particle.SetColor(ci::Color("blue"));
+      particle.SetColor(ci::Color(colors[2]));
       particle.SetMass(masses[2]);
       particle.SetRadius(radii[2]);
     }
-//    particle.SetRadius(random_radius(generator));
-//    particle.SetMass(random_mass(generator)); // TODO re-add
-//    particle.SetColor(ci::Color(random_rgb(generator),
-//                                random_rgb(generator),
-//                                random_rgb(generator)));
   }
 }
 
@@ -95,11 +90,6 @@ void PhysicsHandler::ProcessParticleCollision() {
       // collision only executed if two particles are moving towards each other
       if (dot((outer_vel - inner_vel), (outer_pos - inner_pos)) < 0) {
         if (distance(outer_pos, inner_pos) <= (outer_radius + inner_radius)) {
-          // average RGB color of both particles' colors
-//          ci::Color avg_color = GetAvgColor(particles_[outer].GetColor(),
-//                                            particles_[inner].GetColor());
-//          particles_[outer].SetColor(avg_color);
-//          particles_[inner].SetColor(avg_color); // TODO re-add these lines
           Collide(particles_[outer], particles_[inner]);
         }
       }
@@ -118,17 +108,11 @@ void PhysicsHandler::ProcessWallCollision() {
     vel.y < 0) ||
     (distance(pos, vec2(pos.x, rect_bottom_right_.y)) < particle.GetRadius() &&
     vel.y > 0)) {
-//      particle.SetColor(ci::Color(random_rgb(generator),
-//                                  random_rgb(generator),
-//                                  random_rgb(generator))); // TODO re-add
       HitHorizontalWall(particle);
     } else if ((distance(pos, vec2(rect_top_left_.x, pos.y)) < particle.GetRadius() &&
     vel.x < 0) ||
     (distance(pos, vec2(rect_bottom_right_.x, pos.y)) < particle.GetRadius() &&
     vel.x > 0)) {
-//      particle.SetColor(ci::Color(random_rgb(generator),
-//                                  random_rgb(generator),
-//                                  random_rgb(generator))); // TODO re-add
       HitVerticalWall(particle);
     }
   }

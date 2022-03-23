@@ -27,7 +27,7 @@ class GasContainer {
   /**
    * Displays the container walls and the current positions of the particles.
    */
-  void Display() const;
+  void Display();
 
   /**
    * Updates the positions and velocities of all particles (based on the rules
@@ -35,20 +35,23 @@ class GasContainer {
    */
   void AdvanceOneFrame();
 
-  void DrawHistograms() const;
+  void DrawHistograms();
 
  private:
 
   const vec2 kRectTopLeft = vec2(500, 20);
   const vec2 kRectBottomRight = vec2(1180, 780);
-  const std::vector<std::pair<vec2, vec2>> kHistCoords =
+  const int kNumParticles = 100;
+  const int kNumHistograms = 3;
+  const vector<std::pair<vec2, vec2>> kHistCoords =
       {{vec2(50, 20), vec2(400, 220)},
        {vec2(50, 270), vec2(400, 470)},
        {vec2(50, 520), vec2(400, 720)}};
-  const int kNumParticles = 100;
-
+  const vector<ci::Color> kHistColors = {ci::Color("red"),
+                                         ci::Color("green"),
+                                         ci::Color("blue")};
+  vector<Histogram> histograms_;
   PhysicsHandler handler_;
-
 };
 
 }  // namespace idealgas

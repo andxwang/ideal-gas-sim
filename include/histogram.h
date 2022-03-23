@@ -20,13 +20,28 @@ namespace idealgas {
 class Histogram {
 
  public:
+  /**
+   * Constructor for a Histogram object.
+   * @param coords a pair of vec2 representing the top left
+   * and bottom right coordinates of the histogram, respectively
+   * @param values a vector of floats of the values
+   * for the histogram to plot
+   * @param hist_color the color of the histogram
+   */
   Histogram(const std::pair<vec2, vec2> &coords, const vector<float> &values, const cinder::Color &hist_color);
+
+  /**
+   * Draws the histogram at the given coordinates.
+   */
   void Draw();
+  /**
+   * Updates the histogram's values and frequencies.
+   * @param values a vector of values to be plotted by the histogram
+   */
+  void Update(const vector<float> &values);
   const std::pair<vec2, vec2> &GetCoords() const;
   const vector<float> &GetValues() const;
   const vector<int> &GetFrequencies() const;
-  double GetMaxY() const;
-  double GetMaxX() const;
 
  private:
   std::pair<vec2, vec2> coords_; // first is top left, second is bottom right
@@ -37,8 +52,6 @@ class Histogram {
   const int kBarWidth = 30;
   const int kBarHeightUnit = 10;
   const int kNumYTicks = 8;
-  double max_y_; // max frequency
-  double max_x_; // max of values_
   ci::Color hist_color_;
 };
 

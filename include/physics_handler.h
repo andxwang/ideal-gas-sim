@@ -22,7 +22,10 @@ class PhysicsHandler {
 
  public:
 
-  PhysicsHandler(int num_particles, const vec2& top_left, const vec2& bottom_right);
+  PhysicsHandler(int num_particles,
+                 const vec2& top_left,
+                 const vec2& bottom_right,
+                 const vector<ci::Color>& colors);
 
   /**
    * Updates the velocity of two particles_ that Collide.
@@ -60,24 +63,18 @@ class PhysicsHandler {
   vector<Particle> particles_;
 
  private:
+  const std::vector<float> masses = {1.0, 5.0, 10.0};
+  const std::vector<float> radii = {10.0, 12.0, 15.0};
+  const float kMaxRadius = *std::max_element(masses.begin(), masses.end());
+  const float kMaxVelocity = 5.0;
   vec2 rect_top_left_;
   vec2 rect_bottom_right_;
-//  const float kMinRadius = 1.0;
-  const float kMaxRadius = 30.0;
-  const float kMaxVelocity = 5.0;
-//  const float kMinMass = 0.1;
-//  const float kMaxMass = 10.0;
-  const std::vector<float> masses = {1.0, 3.0, 5.0};
-  const std::vector<float> radii = {10.0, 12.0, 15.0};
   std::random_device device;
   std::mt19937 generator;
   std::uniform_int_distribution<> random_x;
   std::uniform_int_distribution<> random_y;
-//  std::uniform_real_distribution<> random_radius;
-//  std::uniform_real_distribution<> random_mass;
   std::uniform_real_distribution<> random_vel;
   std::uniform_real_distribution<> color_picker;
-//  std::uniform_real_distribution<> random_rgb;
   /**
    * Calculate the average of two RGB colors
    * by averaging each component.
