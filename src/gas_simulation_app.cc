@@ -3,7 +3,7 @@
 namespace idealgas {
 
 IdealGasApp::IdealGasApp() {
-  ci::app::setWindowSize(kWindowSize, kWindowSize);
+  ci::app::setWindowSize(kWindowWidth, kWindowHeight);
 }
 
 void IdealGasApp::draw() {

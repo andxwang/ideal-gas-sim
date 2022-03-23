@@ -18,8 +18,8 @@ class IdealGasApp : public ci::app::App {
   void update() override;
 
   // Play around with these variables so that you can see the entire UI on your screen.
-  const int kWindowSize = 875;
-  const int kMargin = 100;
+  const int kWindowWidth = 1200;
+  const int kWindowHeight = 800;
 
  private:
   GasContainer container_;

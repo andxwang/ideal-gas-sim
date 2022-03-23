@@ -2,6 +2,7 @@
 
 #include "cinder/gl/gl.h"
 #include "physics_handler.h"
+#include "histogram.h"
 #include <vector>
 
 using glm::vec2;
@@ -34,11 +35,17 @@ class GasContainer {
    */
   void AdvanceOneFrame();
 
+  void DrawHistograms() const;
+
  private:
 
-  const vec2 kRectTopLeft = vec2(100, 100);
-  const vec2 kRectBottomRight = vec2(800, 800);
-  const int kNumParticles = 10;
+  const vec2 kRectTopLeft = vec2(500, 20);
+  const vec2 kRectBottomRight = vec2(1180, 780);
+  const std::vector<std::pair<vec2, vec2>> kHistCoords =
+      {{vec2(50, 20), vec2(400, 220)},
+       {vec2(50, 270), vec2(400, 470)},
+       {vec2(50, 520), vec2(400, 720)}};
+  const int kNumParticles = 100;
 
   PhysicsHandler handler_;
 

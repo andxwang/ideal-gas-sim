@@ -3,7 +3,6 @@
 //
 
 #include "physics_handler.h"
-#include <iostream>
 
 namespace idealgas {
 
@@ -19,18 +18,29 @@ PhysicsHandler::PhysicsHandler(int num_particles, const vec2& top_left, const ve
                                               rect_bottom_right_.x - kMaxRadius);
   random_y = std::uniform_int_distribution<> (rect_top_left_.y + kMaxRadius,
                                               rect_bottom_right_.y - kMaxRadius);
-  random_rgb = std::uniform_real_distribution<> (0.0, 1.0);
-  random_radius = std::uniform_real_distribution<> (kMinRadius, kMaxRadius);
-  random_mass = std::uniform_real_distribution<> (kMinMass, kMaxMass);
+//  random_rgb = std::uniform_real_distribution<> (0.0, 1.0);
+//  random_radius = std::uniform_real_distribution<> (kMinRadius, kMaxRadius);
+//  random_mass = std::uniform_real_distribution<> (kMinMass, kMaxMass);
   random_vel = std::uniform_real_distribution<> (-kMaxVelocity, kMaxVelocity);
+  color_picker = std::uniform_real_distribution<> (0.0, 1.0);
 
   for (Particle& particle : particles_) {
     particle.SetPosition(vec2(random_x(generator), random_y(generator)));
     particle.SetVelocity(vec2(random_vel(generator), random_vel(generator)));
-    double temp = random_radius(generator);
-    particle.SetRadius(temp);
-    particle.SetMass(temp);
-    particle.SetColor(ci::Color(temp/kMaxRadius, 0, 1-temp/kMaxRadius));
+    double color_rand = color_picker(generator);
+    if (color_rand < 0.333) {
+      particle.SetColor(ci::Color("red"));
+      particle.SetMass(masses[0]);
+      particle.SetRadius(radii[0]);
+    } else if (color_rand < 0.667) {
+      particle.SetColor(ci::Color("green"));
+      particle.SetMass(masses[1]);
+      particle.SetRadius(radii[1]);
+    } else {
+      particle.SetColor(ci::Color("blue"));
+      particle.SetMass(masses[2]);
+      particle.SetRadius(radii[2]);
+    }
 //    particle.SetRadius(random_radius(generator));
 //    particle.SetMass(random_mass(generator)); // TODO re-add
 //    particle.SetColor(ci::Color(random_rgb(generator),
