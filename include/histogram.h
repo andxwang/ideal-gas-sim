@@ -39,7 +39,6 @@ class Histogram {
    * @param values a vector of values to be plotted by the histogram
    */
   void Update(const vector<float> &values);
-  const std::pair<vec2, vec2> &GetCoords() const;
   const vector<float> &GetValues() const;
   const vector<int> &GetFrequencies() const;
 
@@ -48,7 +47,7 @@ class Histogram {
   vector<float> values_;
   vector<int> frequencies_;
   const int kBinSize = 1; // bin size for speed
-  const int kNumBins = 10; // binSize * numBins = max x
+  const int kNumBins = 10;
   const int kBarWidth = 30;
   const int kBarHeightUnit = 10;
   const int kNumYTicks = 8;

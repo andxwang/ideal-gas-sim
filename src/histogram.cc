@@ -3,7 +3,6 @@
 //
 
 #include "histogram.h"
-#include <iostream>
 
 namespace idealgas {
 
@@ -11,8 +10,6 @@ Histogram::Histogram(const std::pair<vec2, vec2> &coords,
                      const vector<float> &values,
                      const cinder::Color &hist_color)
     : coords_(coords), values_(values), hist_color_(hist_color) {
-  if (values.size() == 0)
-    throw std::invalid_argument("Values vector must have at least one value to create histogram!");
   frequencies_ = vector<int> (kNumBins, 0);
   for (float value : values_) {
     int idx = (int) (value / kBinSize);
@@ -75,10 +72,6 @@ void Histogram::Update(const vector<float> &values) {
       frequencies_[idx]++;
     }
   }
-}
-
-const std::pair<vec2, vec2> &Histogram::GetCoords() const {
-  return coords_;
 }
 
 const vector<float> &Histogram::GetValues() const {

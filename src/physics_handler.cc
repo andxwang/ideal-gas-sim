@@ -7,13 +7,21 @@
 namespace idealgas {
 
 PhysicsHandler::PhysicsHandler(int num_particles,
+                               const vec2 &top_left,
+                               const vec2 &bottom_right)
+    : PhysicsHandler(num_particles, top_left, bottom_right,
+                     {ci::Color("red"),
+                      ci::Color("green"),
+                      ci::Color("blue")}) {}
+
+PhysicsHandler::PhysicsHandler(int num_particles,
                                const vec2& top_left,
                                const vec2& bottom_right,
-                               const vector<ci::Color>& colors) {
+                               const vector<ci::Color>& colors)
+    : rect_top_left_(top_left), rect_bottom_right_(bottom_right) {
   if (top_left.x >= bottom_right.x || top_left.y >= bottom_right.y)
     throw std::invalid_argument("Invalid top left and bottom right coordinates!");
-  rect_top_left_ = vec2(top_left);
-  rect_bottom_right_ = vec2(bottom_right);
+
   particles_ = vector<Particle> (num_particles);
 
   generator = std::mt19937(device());

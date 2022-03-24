@@ -24,6 +24,10 @@ class PhysicsHandler {
 
   PhysicsHandler(int num_particles,
                  const vec2& top_left,
+                 const vec2& bottom_right);
+
+  PhysicsHandler(int num_particles,
+                 const vec2& top_left,
                  const vec2& bottom_right,
                  const vector<ci::Color>& colors);
 

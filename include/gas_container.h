@@ -47,9 +47,9 @@ class GasContainer {
       {{vec2(50, 20), vec2(400, 220)},
        {vec2(50, 270), vec2(400, 470)},
        {vec2(50, 520), vec2(400, 720)}};
-  const vector<ci::Color> kHistColors = {ci::Color("red"),
-                                         ci::Color("green"),
-                                         ci::Color("blue")};
+  const vector<ci::Color> kHistColors = {ci::Color("cyan"),
+                                         ci::Color("magenta"),
+                                         ci::Color("yellow")};
   vector<Histogram> histograms_;
   PhysicsHandler handler_;
 };
